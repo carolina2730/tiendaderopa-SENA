@@ -19,8 +19,8 @@ app.use(express.urlencoded({ extended: true }));
 //app.use(express.static(path.join(__dirname, 'public')));
 
 // Rutas 
-app.use('/', rutacliente);
-app.use('/seguridad', rutaadmin);
+//app.use('/', rutacliente);
+//app.use('/seguridad', rutaadmin);
 
 // Iniciar el servidor
 app.listen(PORT, () => {
