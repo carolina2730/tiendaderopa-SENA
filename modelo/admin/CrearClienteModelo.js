@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 class CrearClienteModelo {
       // funcion para crear nuevos clientes
   static async crearClientes(tipodocumento, numerodocumento, nombres, direccion, telefono, email, contrasena) {
-    const query = 'INSERT INTO cliente (tipo_documento, numero_documento, nombres, direccion, telefono, correo, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const query = 'INSERT INTO cliente (tipoD, numeroD, nombres, direccion, telefono, correo, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)';
 
     try {
       // Generar el hash de la contraseña con bcrypt

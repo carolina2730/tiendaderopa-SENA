@@ -2,28 +2,28 @@ const modelo = require('../../modelo/admin/CrearClienteModelo');
 class CrearClienteControlador {
      // funcion crear nuevo cliente
     static async crearCliente(req, res) {
-        const { t1: tipoD, t2: numeroD, t3: nombres, t4:direccion, t5: telefono, t6: email, t7: contrasena } = req.body;
+        const { t1: tipodocumento, t2: numerodocumento, t3: nomb, t4: direccion, t5: telefono, t6: email, t7: contrasena } = req.body;
         // ------------👁️‍🗨️ validaciones👁️‍🗨️----------------
         // Validar campos vacíos❓❓❓❓❓----------------
-        const errorCampos = CrearClienteControlador.verCampos(tipoD, numeroD, nombres, direccion, telefono, email, contrasena);
+        const errorCampos = CrearClienteControlador.verCampos(tipodocumento, numerodocumento, nomb, direccion, telefono, email, contrasena);
         if (errorCampos) {
             return res.status(400).json({ error: errorCampos });
         }
-        // Validar documento❓❓❓❓❓❓-------------------
-        const erortipoD = CrearClienteControlador.vertipoD(tipoD);
-        if (erortipoD) {
-            return res.status(400).json({ error: erortipoD });
+        // Validar tipo de documento❓❓❓❓❓❓-------------------
+        const errortipoD = CrearClienteControlador.vertipoD(tipodocumento);
+        if (errortipoD) {
+            return res.status(400).json({ error: errortipoD });
         }
-           // Validar documento❓❓❓❓❓❓-------------------
-        const eroride = CrearClienteControlador.verIde(numeroD);
-        if (eroride) {
-            return res.status(400).json({ error: eroride });
+           // Validar numero de documento❓❓❓❓❓❓-------------------
+        const errornumeroD = CrearClienteControlador.verIde(numerodocumento);
+        if (errornumeroD) {
+            return res.status(400).json({ error: errornumeroD });
         }
         
         // Validar nombres completos ❓❓❓❓❓❓❓------------
-        const errornombres= CrearClienteControlador.vernom(nombres);
-        if (errornombres) {
-            return res.status(400).json({ error: errornombres });
+        const errornomb = CrearClienteControlador.vernomb(nomb);
+        if (errornomb) {
+            return res.status(400).json({ error: errornomb });
         }
         // Validar dirección❓❓❓❓❓❓❓-----------------------
         const errordir = CrearClienteControlador.verdir(direccion);
@@ -47,7 +47,7 @@ class CrearClienteControlador {
         }
 
          try {
-            const result = await modelo.CrearClientes(tipoD,numeroD, nombres, telefono, email, contrasena);
+            const result = await modelo.crearClientes(tipodocumento, numerodocumento, nomb, direccion, telefono, email, contrasena);
             res.status(201).json({ mensaje: 'cliente creado con exito', id: result.insertId });
         } catch (err) {
             if (err.message.includes("Duplicate entry")) {
@@ -66,8 +66,8 @@ class CrearClienteControlador {
     //-------------------validaciones----------------------------
     //👊👊👊👊👊👊👊👊👊👊👊👊👊👊👊👊👊👊👊👊👊👊👊👊👊👊👊
 
-    static verCampos(tipoD, numeroD, nombres, direccion, telefono, email, contrasena) {
-        if (!tipoD || !numeroD || !nombres || !direccion || !telefono || !email || !contrasena) {
+    static verCampos(tipodocumento, numerodocumento, nomb, direccion, telefono, email, contrasena) {
+        if (!tipodocumento || !numerodocumento || !nomb || !direccion || !telefono || !email || !contrasena) {
             return 'Todos los campos son obligatorios.';
 
         return null; // no encontro campos vacios
@@ -75,17 +75,17 @@ class CrearClienteControlador {
 } 
 
 //verificar tipo de documento
-    static vertipoD(tipoD) {
+    static vertipoD(tipodocumento) {
         const tip = /^[A-Z\s]{2,3}$/;
-        if (!tip.test(tipoD)) {
+        if (!tip.test(tipodocumento)) {
             return 'tipo de documento invalidos minimo 2 caracteres o maximo 3 CC, TI, RC, CE';
         } else {
             return null;
         }
     }
           //validar documento
-    static verIde(numeroD) {
-        if (!/^\d{8,10}$/.test(numeroD)) {
+    static verIde(numerodocumento) {
+        if (!/^\d{8,10}$/.test(numerodocumento)) {
             return 'La identificación debe tener entre 8 y 10 dígitos numéricos.';
         } else {
             return null; // Todo bien
@@ -93,8 +93,8 @@ class CrearClienteControlador {
     }
 
      //verificar nombres completos
-    static vernombres(nombres) {
-        const name = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{3,100}$/;
+    static vernomb(nombres) {
+        const name = /^[A-Za-z\s]{3,100}$/;
         if (!name.test(nombres)) {
             return 'Nombres y apellidos invalidos minimo 3 caracteres o maximo 100 solo letras minuscula o ]Mayuscula';
         } else {
